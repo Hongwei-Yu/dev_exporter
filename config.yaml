@@ -22,7 +22,7 @@ MonitorPC:
 
 # monitor proc and keepalive
 MonitorProc:
-  enabled: false
+  enabled: true
   process:
     - name: LZSstation
       interval: 10s
@@ -65,7 +65,7 @@ ScheduleTask:
       cron: "* * * * *"
       type: "shell"
       parameters:
-        shellcommand: "test"
+        shellcommand: ""
 
 
 

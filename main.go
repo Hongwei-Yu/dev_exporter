@@ -11,7 +11,7 @@ func main() {
 	PCcfg, ProCcfg, Selfcfg := loadMonitorExporterConfig()
 	log.Println(Selfcfg.Version, "write by YHW")
 	initPrometheus(PCcfg, ProCcfg)
-	log.Println(PCcfg, ProCcfg, Selfcfg)
+	//log.Println(PCcfg, ProCcfg, Selfcfg)
 	log.Println("监控程序开始")
 	if Selfcfg.MonitorKeepalive {
 		log.Println("开启本程序保活")
@@ -20,7 +20,10 @@ func main() {
 	}
 	go func() {
 		http.Handle("/metrics", promhttp.Handler())
-		http.ListenAndServe(Selfcfg.Port, nil)
+		err := http.ListenAndServe(Selfcfg.Port, nil)
+		if err != nil {
+			log.Panicln(err)
+		}
 	}()
 	// 启动PC监控协程
 	if PCcfg.CPU.Enabled {
@@ -44,7 +47,14 @@ func main() {
 
 	//启动定时任务
 	ScheduleCfg := loadScheduleTaskConfig()
-	log.Println(ScheduleCfg)
+	log.Println("存在以下定时任务")
+	for _, job := range ScheduleCfg.Job {
+		log.Println(job.Name + " : " + job.Cron)
+		log.Println(job.Parameters)
+	}
+	log.Println("等待3m请确认定时任务是否正确")
+	time.Sleep(180 * time.Second)
+	log.Println("定时任务开始")
 	if ScheduleCfg.Enabled {
 		for _, job := range ScheduleCfg.Job {
 			switch job.Type {

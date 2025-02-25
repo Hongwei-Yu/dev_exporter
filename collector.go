@@ -40,9 +40,9 @@ func monitorMemory(cfg ResourceConfig) {
 	defer ticker.Stop()
 
 	for range ticker.C {
-		mem, _ := mem.VirtualMemory()
+		memory, _ := mem.VirtualMemory()
 		//fmt.Println(mem)
-		memUsage.Set(mem.UsedPercent)
+		memUsage.Set(memory.UsedPercent)
 		//memUsage.Set(1)
 	}
 }
@@ -106,6 +106,7 @@ func monitorProc(cfg ProcConfig) {
 		if online {
 			procMonitor.WithLabelValues(cfg.Name).Set(1)
 		} else {
+			procMonitor.WithLabelValues(cfg.Name).Set(0)
 			log.Println(gid, cfg.Name+" down")
 			if cfg.KeepAlive {
 				log.Println(gid, "开始拉起: "+cfg.Name)

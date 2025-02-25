@@ -21,10 +21,12 @@ func CreateShellJob(job JobConfig) *ShellJob {
 
 func (j *ShellJob) Run() {
 
-	log.Println("开始执行" + j.Name)
+	log.Println("开始执行" + j.Name + j.Command)
 	err := exec.Command("bash", "-c", j.Command).Run()
 	if err != nil {
 		log.Println(j.Name + " 执行失败")
+	} else {
+		log.Println(j.Name + " 执行成功")
 	}
 }
 
@@ -32,7 +34,13 @@ func StartJob(spec string, job ShellJob) {
 
 	c := cron.New()
 
-	c.AddJob(spec, &job)
+	addJob, err := c.AddJob(spec, &job)
+	if err != nil {
+		log.Println(job.Name + " 添加错误")
+	} else {
+		log.Println(job.Name + "job添加成功")
+		log.Println(addJob)
+	}
 
 	// 启动执行任务
 	c.Start()
