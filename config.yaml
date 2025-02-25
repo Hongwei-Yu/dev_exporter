@@ -1,0 +1,72 @@
+# monitor disk cpu mem network
+MonitorPC:
+  disk:
+    enabled: false
+    mountpoints:
+      - "E:"
+    interval: 10s
+
+  cpu:
+    enabled: false        # 是否启用CPU监控
+    per_core: true        # 是否监控每个核心
+    interval: 5s         # 采集间隔
+
+  memory:
+    enabled: false
+    interval: 5s
+
+  network:
+    enabled: false
+    interfaces: [ "enp4s0" ]  # 指定监控的网卡
+    interval: 10s
+
+# monitor proc and keepalive
+MonitorProc:
+  enabled: false
+  process:
+    - name: LZSstation
+      interval: 10s
+#      help: "LZStation online (1 online 0 offline)"
+      keepalive: 1 # offline后是否拉起
+      keepaliveShell: "cd /home/lz/bin/ && ./startApp.sh" # 拉起命令
+      keepaliveWait: 60s # 拉起命令执行后等待时间
+
+    - name: Weigh
+      interval: 10s
+#      help: "LZStation online (1 online 0 offline)"
+      keepalive: 0 # offline后是否拉起
+      keepaliveShell: "cd /home/lz/bin/ && ./startApp.sh" # 拉起命令
+      keepaliveWait: 60s # 拉起命令执行后等待时间
+
+    - name: Xvnc
+      interval: 10s
+      #      help: "LZStation online (1 online 0 offline)"
+      keepalive: 1 # offline后是否拉起
+      keepaliveShell: "vncserver :1" # 拉起命令
+      keepaliveWait: 60s # 拉起命令执行后等待时间
+
+
+
+# 监控程序是否保活方式被系统oom killer  true表示保活 false表示不保活
+Self:
+  MonitorKeepalive: true
+  Version: "v1.0"
+  Port: ":8080"
+  Auth: "write by yhw"
+
+# 定时任务 shell 类型
+ScheduleTask:
+  enabled: true
+#  skipIfStillRunning: true # 如果上次任务还正在运行，那么跳过本次任务的运行并记录日记
+#  delayIfStillRunning: true # 如果上次任务还正在运行，那么延迟执行本次任务的运行并记录日记
+#  recover: true # 如果 Job Panic，记录日记
+  job:
+    - name: "清理ucftp任务"
+      cron: "* * * * *"
+      type: "shell"
+      parameters:
+        shellcommand: "test"
+
+
+
+
