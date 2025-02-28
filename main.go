@@ -53,7 +53,7 @@ func main() {
 		log.Println(job.Parameters)
 	}
 	log.Println("等待3m请确认定时任务是否正确")
-	time.Sleep(180 * time.Second)
+	//time.Sleep(180 * time.Second)
 	log.Println("定时任务开始")
 	if ScheduleCfg.Enabled {
 		for _, job := range ScheduleCfg.Job {

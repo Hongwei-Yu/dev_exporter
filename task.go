@@ -37,6 +37,7 @@ func StartJob(spec string, job ShellJob) {
 	addJob, err := c.AddJob(spec, &job)
 	if err != nil {
 		log.Println(job.Name + " 添加错误")
+		log.Println(err)
 	} else {
 		log.Println(job.Name + "job添加成功")
 		log.Println(addJob)

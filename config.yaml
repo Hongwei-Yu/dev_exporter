@@ -22,7 +22,7 @@ MonitorPC:
 
 # monitor proc and keepalive
 MonitorProc:
-  enabled: true
+  enabled: false
   process:
     - name: LZSstation
       interval: 10s
@@ -49,7 +49,7 @@ MonitorProc:
 
 # 监控程序是否保活方式被系统oom killer  true表示保活 false表示不保活
 Self:
-  MonitorKeepalive: true
+  MonitorKeepalive: false
   Version: "v1.0"
   Port: ":8080"
   Auth: "write by yhw"
@@ -62,11 +62,15 @@ ScheduleTask:
 #  recover: true # 如果 Job Panic，记录日记
   job:
     - name: "清理ucftp任务"
-      cron: "* * * * *"
+      cron: "00 23 * * *"
       type: "shell"
       parameters:
-        shellcommand: ""
+        shellcommand: "cd /home/lzdata/ucftp&&find ./ -mtime +1 -exec rm -rf {} \\;"
 
-
+    - name: "清理logfile"
+      cron: "00 23 * * *"
+      type: "shell"
+      parameters:
+        shellcommand: "cd /home/lzdata/logfiles&&find ./ -mtime +30 -exec rm -rf {} \\;"
 
 
