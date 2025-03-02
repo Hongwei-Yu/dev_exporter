@@ -64,3 +64,21 @@ func initPrometheus(PCcfg *MonitorPcConfig, ProCcfg *MonitorProcConfig) {
 		prometheus.MustRegister(procMonitor)
 	}
 }
+
+func UnRegister() {
+	if PCcfg.CPU.Enabled {
+		prometheus.Unregister(cpuUsage)
+	}
+	if PCcfg.Memory.Enabled {
+		prometheus.Unregister(memUsage)
+	}
+	if PCcfg.Disk.Enabled {
+		prometheus.Unregister(diskUsage)
+	}
+	if PCcfg.Network.Enabled {
+		prometheus.Unregister(networkTx)
+	}
+	if ProCcfg.Enabled {
+		prometheus.Unregister(procMonitor)
+	}
+}

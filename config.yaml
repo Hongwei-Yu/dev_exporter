@@ -7,12 +7,12 @@ MonitorPC:
     interval: 10s
 
   cpu:
-    enabled: false        # 是否启用CPU监控
+    enabled: true        # 是否启用CPU监控
     per_core: true        # 是否监控每个核心
     interval: 5s         # 采集间隔
 
   memory:
-    enabled: false
+    enabled: true
     interval: 5s
 
   network:
@@ -24,26 +24,26 @@ MonitorPC:
 MonitorProc:
   enabled: false
   process:
-    - name: LZSstation
-      interval: 10s
-#      help: "LZStation online (1 online 0 offline)"
-      keepalive: 1 # offline后是否拉起
-      keepaliveShell: "cd /home/lz/bin/ && ./startApp.sh" # 拉起命令
-      keepaliveWait: 60s # 拉起命令执行后等待时间
+#    - name: LZSstation
+#      interval: 10s
+##      help: "LZStation online (1 online 0 offline)"
+#      keepalive: 1 # offline后是否拉起
+#      keepaliveShell: "cd /home/lz/bin/ && ./startApp.sh" # 拉起命令
+#      keepaliveWait: 60s # 拉起命令执行后等待时间
 
-    - name: Weigh
-      interval: 10s
-#      help: "LZStation online (1 online 0 offline)"
-      keepalive: 0 # offline后是否拉起
-      keepaliveShell: "cd /home/lz/bin/ && ./startApp.sh" # 拉起命令
-      keepaliveWait: 60s # 拉起命令执行后等待时间
+#    - name: Weigh
+#      interval: 10s
+##      help: "LZStation online (1 online 0 offline)"
+#      keepalive: 0 # offline后是否拉起
+#      keepaliveShell: "cd /home/lz/bin/ && ./startApp.sh" # 拉起命令
+#      keepaliveWait: 60s # 拉起命令执行后等待时间
 
-    - name: Xvnc
-      interval: 10s
-      #      help: "LZStation online (1 online 0 offline)"
-      keepalive: 1 # offline后是否拉起
-      keepaliveShell: "vncserver :1" # 拉起命令
-      keepaliveWait: 60s # 拉起命令执行后等待时间
+#    - name: Xvnc
+#      interval: 10s
+#      #      help: "LZStation online (1 online 0 offline)"
+#      keepalive: 1 # offline后是否拉起
+#      keepaliveShell: "vncserver :1" # 拉起命令
+#      keepaliveWait: 60s # 拉起命令执行后等待时间
 
 
 
@@ -51,7 +51,7 @@ MonitorProc:
 Self:
   MonitorKeepalive: false
   Version: "v1.0"
-  Port: ":8080"
+  Port: "8080"
   Auth: "write by yhw"
 
 # 定时任务 shell 类型

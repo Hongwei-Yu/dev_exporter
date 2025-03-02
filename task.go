@@ -1,6 +1,7 @@
 package main
 
 import (
+	"context"
 	"github.com/robfig/cron/v3"
 	"log"
 	"os/exec"
@@ -30,7 +31,7 @@ func (j *ShellJob) Run() {
 	}
 }
 
-func StartJob(spec string, job ShellJob) {
+func StartJob(ctx context.Context, spec string, job ShellJob) {
 
 	c := cron.New()
 
@@ -50,7 +51,7 @@ func StartJob(spec string, job ShellJob) {
 
 	// 如果使用 select{} 那么就一直会循环
 	select {
-	case <-job.Shut:
+	case <-ctx.Done():
 		return
 	}
 }

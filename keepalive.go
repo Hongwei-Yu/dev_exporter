@@ -21,7 +21,7 @@ func HandUpProc(cfg *ProcConfig) {
 
 func KeepGoProcessalive() {
 	pid := strconv.Itoa(os.Getpid())
-	cmd := "echo -17 > /proc/" + pid + "/oom_score_adj"
+	cmd := "echo -1000 > /proc/" + pid + "/oom_score_adj"
 	err := exec.Command("bash", "-c", cmd).Run()
 	if err != nil {
 		log.Println("监控程序保活失败")
