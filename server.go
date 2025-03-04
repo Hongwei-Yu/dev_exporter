@@ -11,13 +11,19 @@ import (
 
 var server *http.Server
 
+func init() {
+	http.DefaultServeMux.Handle("/metrics", promhttp.Handler())
+}
+
 func StartServer(config SelfConfig) {
 	server = &http.Server{
-		Addr: fmt.Sprintf(":%s", config.Port),
+		Addr:    fmt.Sprintf(":%s", config.Port),
+		Handler: http.DefaultServeMux,
 	}
 	go func() {
-		http.Handle("/metrics", promhttp.Handler())
+
 		log.Printf("Server starting on %s", server.Addr)
+		http.Handle("/metrics", promhttp.Handler())
 		if err := server.ListenAndServe(); err != nil && err != http.ErrServerClosed {
 			log.Fatalf("Server failed: %v", err)
 		}
@@ -27,11 +33,13 @@ func StartServer(config SelfConfig) {
 func RestartServer(config SelfConfig) {
 	oldServer := server
 	newServer := &http.Server{
-		Addr: fmt.Sprintf(":%s", config.Port),
+		Addr:    fmt.Sprintf(":%s", config.Port),
+		Handler: http.DefaultServeMux,
 	}
 
 	// 启动新服务器
 	go func() {
+
 		log.Printf("Starting new server on %s", newServer.Addr)
 		if err := newServer.ListenAndServe(); err != nil && err != http.ErrServerClosed {
 			log.Fatalf("Server failed: %v", err)

@@ -9,6 +9,7 @@ import (
 // GoroutineManager 协程管理器
 type GoroutineManager struct {
 	wg   sync.WaitGroup
+	mu   sync.Mutex // 新增互斥锁
 	ctx  context.Context
 	stop context.CancelFunc
 }
@@ -37,4 +38,20 @@ func (gm *GoroutineManager) Stop() {
 	gm.stop()    // 发送停止信号
 	gm.wg.Wait() // 等待所有协程退出
 	log.Println("全部协程退出")
+
+}
+
+// Reset 重置管理器（创建新 Context）
+func (gm *GoroutineManager) Reset() {
+	gm.mu.Lock()
+	defer gm.mu.Unlock()
+
+	// 停止旧 Context（如果存在）
+	if gm.stop != nil {
+		gm.stop()
+		gm.wg.Wait()
+	}
+
+	// 创建新 Context
+	gm.ctx, gm.stop = context.WithCancel(context.Background())
 }

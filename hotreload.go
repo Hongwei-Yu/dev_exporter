@@ -82,7 +82,7 @@ func Start(mgr *GoroutineManager) {
 		log.Println(job.Parameters)
 	}
 	log.Println("等待3m请确认定时任务是否正确")
-	//time.Sleep(180 * time.Second)
+	time.Sleep(180 * time.Second)
 	log.Println("定时任务开始")
 	if ScheduleCfg.Enabled {
 		for _, job := range ScheduleCfg.Job {
@@ -99,13 +99,14 @@ func Start(mgr *GoroutineManager) {
 
 func Restart(mgr *GoroutineManager) {
 	mgr.Stop()
+	mgr.Reset()
 	UnRegister()
 	log.Println("重新开始程序")
 	Start(mgr)
 }
 
 func Stop(mgr *GoroutineManager) {
-	mgr.stop()
+	mgr.Stop()
 	StopServer()
 	os.Exit(0)
 }
