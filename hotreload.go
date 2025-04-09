@@ -74,6 +74,8 @@ func Start(mgr *GoroutineManager) {
 		}
 	}
 
+	// v1.2 进程监控优化
+
 	//启动定时任务
 	ScheduleCfg = loadScheduleTaskConfig()
 	log.Println("存在以下定时任务")

@@ -24,13 +24,15 @@ type ProcConfig struct {
 	Name           string        `yaml:"name"`
 	Help           string        `yaml:"help"`
 	KeepAlive      bool          `yaml:"keepAlive"`
+	NotifyID       string        `yaml:"notifyID"`
 	KeepaliveShell string        `yaml:"keepaliveShell"`
 	KeepaliveWait  time.Duration `yaml:"keepaliveWait"`
 	Interval       time.Duration `yaml:"interval"`
 }
 
 type MonitorProcConfig struct {
-	Enabled bool         `yaml:"enabled"`
+	Enabled bool `yaml:"enabled"`
+
 	Process []ProcConfig `yaml:"process"`
 }
 

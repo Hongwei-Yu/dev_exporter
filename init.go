@@ -45,6 +45,20 @@ var (
 		},
 		[]string{"Name"},
 	)
+	procMonitorCpu = prometheus.NewGaugeVec(
+		prometheus.GaugeOpts{
+			Name: "process_monitor_cpu_percent",
+			Help: "Monitor process cpu percent%",
+		},
+		[]string{"Name"},
+	)
+	procMonitorMem = prometheus.NewGaugeVec(
+		prometheus.GaugeOpts{
+			Name: "process_monitor_mem_percent",
+			Help: "Monitor process mem percent%",
+		},
+		[]string{"Name"},
+	)
 )
 
 func initPrometheus(PCcfg *MonitorPcConfig, ProCcfg *MonitorProcConfig) {
@@ -63,6 +77,7 @@ func initPrometheus(PCcfg *MonitorPcConfig, ProCcfg *MonitorProcConfig) {
 	if ProCcfg.Enabled {
 		prometheus.MustRegister(procMonitor)
 	}
+
 }
 
 func UnRegister() {

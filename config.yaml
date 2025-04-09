@@ -23,27 +23,31 @@ MonitorPC:
 # monitor proc and keepalive
 MonitorProc:
   enabled: false
+#  enableCPU: false  v1.2 cpu使用率
+#  enableMem: false  v1.2 mem使用率
+#  enableDisk: false v1.2 disk IO
+#  enableFD: false v1.2 打开文件描述符数量
   process:
-#    - name: LZSstation
-#      interval: 10s
-##      help: "LZStation online (1 online 0 offline)"
-#      keepalive: 1 # offline后是否拉起
-#      keepaliveShell: "cd /home/lz/bin/ && ./startApp.sh" # 拉起命令
-#      keepaliveWait: 60s # 拉起命令执行后等待时间
+    - name: LZSstation
+      interval: 10s
+#      help: "LZStation online (1 online 0 offline)"
+      keepalive: 1 # offline后是否拉起
+      keepaliveShell: "cd /home/lz/bin/ && ./startApp.sh" # 拉起命令
+      keepaliveWait: 60s # 拉起命令执行后或者陷入等待时间
 
-#    - name: Weigh
-#      interval: 10s
-##      help: "LZStation online (1 online 0 offline)"
-#      keepalive: 0 # offline后是否拉起
-#      keepaliveShell: "cd /home/lz/bin/ && ./startApp.sh" # 拉起命令
-#      keepaliveWait: 60s # 拉起命令执行后等待时间
+    - name: Weigh
+      interval: 10s
+#      help: "LZStation online (1 online 0 offline)"
+      keepalive: 0 # offline后是否拉起
+      keepaliveShell: "cd /home/lz/bin/ && ./startApp.sh" # 拉起命令
+      keepaliveWait: 60s # 拉起命令执行后等待时间
 
-#    - name: Xvnc
-#      interval: 10s
-#      #      help: "LZStation online (1 online 0 offline)"
-#      keepalive: 1 # offline后是否拉起
-#      keepaliveShell: "vncserver :1" # 拉起命令
-#      keepaliveWait: 60s # 拉起命令执行后等待时间
+    - name: Xvnc
+      interval: 10s
+      #      help: "LZStation online (1 online 0 offline)"
+      keepalive: 1 # offline后是否拉起
+      keepaliveShell: "vncserver :1" # 拉起命令
+      keepaliveWait: 60s # 拉起命令执行后等待时间
 
 
 

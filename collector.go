@@ -193,6 +193,7 @@ func monitorProc(ctx context.Context, cfg ProcConfig) {
 		select {
 		case <-ctx.Done():
 			return
+
 		case <-ticker.C:
 			if atomic.LoadInt32(&isRunning) == 0 {
 				return
@@ -211,6 +212,92 @@ func monitorProc(ctx context.Context, cfg ProcConfig) {
 					time.Sleep(cfg.KeepaliveWait)
 				}
 				// 执行采集前再次检查运行状态
+
+			}
+		}
+
+	}
+
+}
+
+// v1.2版本优化进程监控
+
+func monitorProc_CPU(ctx context.Context, cfg ProcConfig) {
+	var isRunning int32 = 1
+	defer atomic.StoreInt32(&isRunning, 0) // 退出时标记为停止
+	gid := GetGID()
+	log.Println(gid, "进程"+cfg.Name+"开始CPU使用率监控")
+	defer log.Println(gid, "进程"+cfg.Name+"CPU使用率监控停止")
+	ticker := time.NewTicker(cfg.Interval)
+	defer ticker.Stop()
+	for {
+		// 优先检查退出信号和运行状态
+		if atomic.LoadInt32(&isRunning) == 0 {
+			return
+		}
+
+		select {
+		case <-ctx.Done():
+			return
+
+		case <-ticker.C:
+			if atomic.LoadInt32(&isRunning) == 0 {
+				return
+			}
+			pid, err := GetProcessPidByName(cfg.Name)
+
+			if err != nil {
+				log.Println(gid, "进程"+cfg.Name+"cpu使用率监控错误: ", err)
+
+			} else {
+				percent := ProcCpuMonitor(*pid)
+				if percent != nil {
+					procMonitorCpu.WithLabelValues(cfg.Name).Set(*percent)
+				} else {
+					log.Println(gid, "进程"+cfg.Name+"cpu使用率监控错误: ", err)
+				}
+
+			}
+		}
+
+	}
+
+}
+
+func monitorProc_MEM(ctx context.Context, cfg ProcConfig) {
+	var isRunning int32 = 1
+	defer atomic.StoreInt32(&isRunning, 0) // 退出时标记为停止
+	gid := GetGID()
+	log.Println(gid, "进程"+cfg.Name+"开始CPU使用率监控")
+	defer log.Println(gid, "进程"+cfg.Name+"CPU使用率监控停止")
+	ticker := time.NewTicker(cfg.Interval)
+	defer ticker.Stop()
+	for {
+		// 优先检查退出信号和运行状态
+		if atomic.LoadInt32(&isRunning) == 0 {
+			return
+		}
+
+		select {
+		case <-ctx.Done():
+			return
+
+		case <-ticker.C:
+			if atomic.LoadInt32(&isRunning) == 0 {
+				return
+			}
+			pid, err := GetProcessPidByName(cfg.Name)
+
+			if err != nil {
+				log.Println(gid, "进程"+cfg.Name+"cpu使用率监控错误: ", err)
+
+			} else {
+				percent := ProcMemMonitor(*pid)
+				if percent != nil {
+					procMonitorMem.WithLabelValues(cfg.Name).Set(float64(*percent))
+				} else {
+					log.Println(gid, "进程"+cfg.Name+"cpu使用率监控错误: ", err)
+				}
 
 			}
 		}
